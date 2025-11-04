@@ -1,5 +1,6 @@
 package org.example;
 
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -23,5 +24,15 @@ public class LandingPage {
 
     @FindBy(id = "login")
     WebElement loginBtn;
+
+    public void login(String email, String password) {
+        userEmail.sendKeys(email);
+        userPassword.sendKeys(password);
+        loginBtn.click();
+    }
+
+    public void goTo(){
+        driver.get("https://rahulshettyacademy.com/client");
+    }
 
 }
