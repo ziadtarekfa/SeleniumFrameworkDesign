@@ -16,46 +16,32 @@ public class StandAloneTest {
 
 
         WebDriver driver = new ChromeDriver();
-        WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(5));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
 
+        LandingPage landingPage = new LandingPage(driver);
+        landingPage.goTo();
+        landingPage.login("ziad@gmail.com", "Hello123");
 
-       LandingPage landingPage = new LandingPage(driver);
-       landingPage.goTo();
-       landingPage.login("ziad@gmail.com","Hello123");
-
-
-       ProductCatalogue productCatalogue = new ProductCatalogue(driver);
-
-       productCatalogue.addProductToCart("ZARA COAT 3");
-
+        ProductCatalogue productCatalogue = new ProductCatalogue(driver);
+        productCatalogue.addProductToCart("ZARA COAT 3");
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#toast-container")));
         wait.until(ExpectedConditions.invisibilityOf(driver.findElement(By.cssSelector(".ng-animating"))));
 
 
+        Header header = new Header(driver);
+        header.clickCart();
 
-        driver.findElement(By.cssSelector("[routerlink*='cart']")).click();
 
-
-        List<WebElement> cartItems = driver.findElements(By.cssSelector(".cartSection h3"));
-
-       boolean isMatch =  cartItems.stream().anyMatch(item-> item.getText().equalsIgnoreCase("ZARA COAT 3"));
-
-        Assert.assertTrue(isMatch);
-
-        WebElement checkoutBtn = driver.findElement(By.cssSelector(".cart .btn-primary"));
-        checkoutBtn.click();
-
+        CartPage cartPage = new CartPage(driver);
+        Assert.assertTrue(cartPage.verifyProductDisplayed("ZARA COAT 3"));
+        cartPage.goToCheckout();
 
         driver.findElement(By.cssSelector("input[placeholder='Select Country']")).sendKeys("Egypt");
-
         driver.findElement(By.cssSelector(".ta-results button")).click();
-
-WebElement placeOrderBtn =  driver.findElement(By.cssSelector(".actions a"));
-
-
+        WebElement placeOrderBtn = driver.findElement(By.cssSelector(".actions a"));
         placeOrderBtn.click();
 
         driver.quit();
