@@ -39,10 +39,12 @@ public class StandAloneTest {
         Assert.assertTrue(cartPage.verifyProductDisplayed("ZARA COAT 3"));
         cartPage.goToCheckout();
 
-        driver.findElement(By.cssSelector("input[placeholder='Select Country']")).sendKeys("Egypt");
-        driver.findElement(By.cssSelector(".ta-results button")).click();
-        WebElement placeOrderBtn = driver.findElement(By.cssSelector(".actions a"));
-        placeOrderBtn.click();
+
+        CheckoutPage checkoutPage = new CheckoutPage(driver);
+        checkoutPage.selectCountry("Egypt");
+        checkoutPage.placeOrder();
+
+        Thread.sleep(3000);
 
         driver.quit();
 
